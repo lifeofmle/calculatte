@@ -1,0 +1,93 @@
+diff --git a/calculator.js b/calculator.js
+index 3634619..ba409fd 100644
+--- a/calculator.js
++++ b/calculator.js
+@@ -1,7 +1,8 @@
+ // Price constants
+ const PRICES = {
+     ESPRESSO: 2.00, // per shot
+-    MILK: 0.25      // per 100ml
++    MILK: 0.25,     // per 100ml
++    PUMPS: 0.50     // per pump
+ };
+ 
+ // Conversion constants
+@@ -9,16 +10,17 @@ const CONVERSION = {
+     OZ_TO_ML: 29.5735
+ };
+ 
+-export function calculateLattePrice(espressoShots, milkMl) {
++export function calculateLattePrice(espressoShots, milkMl, pumps) {
+     // Convert milk from ml to 100ml units for pricing
+     const milkUnits = milkMl / 100;
+     
+     // Calculate costs
+     const espressoCost = espressoShots * PRICES.ESPRESSO;
+     const milkCost = milkUnits * PRICES.MILK;
++    const pumpsCost = pumps * PRICES.PUMPS;
+ 
+     // Calculate and return total
+-    return espressoCost + milkCost;
++    return espressoCost + milkCost + pumpsCost;
+ }
+ 
+ // Helper function to convert ounces to milliliters
+diff --git a/calculator.test.js b/calculator.test.js
+index f892d1e..b58d443 100644
+--- a/calculator.test.js
++++ b/calculator.test.js
+@@ -2,17 +2,17 @@ import { calculateLattePrice, ozToMl } from './calculator.js';
+ 
+ describe('Latte Price Calculator', () => {
+     test('calculates price for basic latte', () => {
+-        // 2 shots espresso, 240ml milk (about 8oz)
+-        expect(calculateLattePrice(2, 240)).toBe(5.60);
++        // 2 shots espresso, 240ml milk (about 8oz), no pumps
++        expect(calculateLattePrice(2, 240, 0)).toBe(5.60);
+     });
+ 
+     test('handles zero values', () => {
+-        expect(calculateLattePrice(0, 0)).toBe(0);
++        expect(calculateLattePrice(0, 0, 0)).toBe(0);
+     });
+ 
+     test('handles decimal values', () => {
+-        // 1.5 shots espresso, 150ml milk
+-        expect(calculateLattePrice(1.5, 150)).toBe(3.875);
++        // 1.5 shots espresso, 150ml milk, 1 pump
++        expect(calculateLattePrice(1.5, 150, 1)).toBe(4.125);
+     });
+ });
+ 
+diff --git a/index.html b/index.html
+index 6ffe20f..5c3d51c 100644
+--- a/index.html
++++ b/index.html
+@@ -29,6 +29,15 @@
+                         <span class="text-gray-600">$0.25 per 100ml</span>
+                     </div>
+                 </div>
++
++                <div class="flex items-center justify-between">
++                    <label for="pumps" class="text-gray-700">Pumps:</label>
++                    <div class="flex items-center space-x-2">
++                        <input type="number" id="pumps" min="0" value="0" step="1" 
++                               class="w-20 px-3 py-2 border rounded-md">
++                        <span class="text-gray-600">$0.50 per pump</span>
++                    </div>
++                </div>
+             </div>
+ 
+             <button onclick="calculateTotal()" 
+@@ -47,9 +56,10 @@
+             // Get input values
+             const espressoShots = parseFloat(document.getElementById('espresso').value);
+             const milkMl = parseFloat(document.getElementById('milk').value);
++            const pumps = parseFloat(document.getElementById('pumps').value);
+ 
+             // Calculate total
+-            const total = calculateLattePrice(espressoShots, milkMl);
++            const total = calculateLattePrice(espressoShots, milkMl, pumps);
+ 
+             // Display result
+             document.getElementById('total').textContent = `Total Price: $${total.toFixed(2)}`;
