@@ -1,4 +1,4 @@
-# Calculatte - the Latte Price Calculator
+# Calculatte - the Latte Price Calculator ☕️
 
 A simple demonstration project showcasing a calculator for determining the total price of latte ingredients. This project serves as an example of:
 
@@ -6,6 +6,8 @@ A simple demonstration project showcasing a calculator for determining the total
 - Unit testing with Jest
 - Tailwind CSS implementation
 - Metric system usage in web applications
+
+![calculator example](calculator-price.png)
 
 ## Project Structure
 
