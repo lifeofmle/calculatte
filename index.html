@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latte Price Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="max-w-md mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">Latte Price Calculator</h2>
+            
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <label for="espresso" class="text-gray-700">Espresso (shots):</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="number" id="espresso" min="0" value="2" step="0.5" 
+                               class="w-20 px-3 py-2 border rounded-md">
+                        <span class="text-gray-600">$2.00 per shot</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <label for="milk" class="text-gray-700">Milk (ml):</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="number" id="milk" min="0" value="240" step="10" 
+                               class="w-20 px-3 py-2 border rounded-md">
+                        <span class="text-gray-600">$0.25 per 100ml</span>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="calculateTotal()" 
+                    class="mt-6 w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition-colors">
+                Calculate Total
+            </button>
+
+            <div id="total" class="mt-4 text-xl font-bold text-gray-800"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { calculateLattePrice } from './calculator.js';
+
+        window.calculateTotal = function() {
+            // Get input values
+            const espressoShots = parseFloat(document.getElementById('espresso').value);
+            const milkMl = parseFloat(document.getElementById('milk').value);
+
+            // Calculate total
+            const total = calculateLattePrice(espressoShots, milkMl);
+
+            // Display result
+            document.getElementById('total').textContent = `Total Price: $${total.toFixed(2)}`;
+        };
+
+        // Calculate total when page loads
+        window.onload = calculateTotal;
+    </script>
+</body>
+</html> 
