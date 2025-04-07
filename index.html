@@ -29,6 +29,15 @@
                         <span class="text-gray-600">$0.25 per 100ml</span>
                     </div>
                 </div>
+
+                <div class="flex items-center justify-between">
+                    <label for="pumps" class="text-gray-700">Pumps:</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="number" id="pumps" min="0" value="0" step="1" 
+                               class="w-20 px-3 py-2 border rounded-md">
+                        <span class="text-gray-600">$0.50 per pump</span>
+                    </div>
+                </div>
             </div>
 
             <button onclick="calculateTotal()" 
@@ -47,9 +56,10 @@
             // Get input values
             const espressoShots = parseFloat(document.getElementById('espresso').value);
             const milkMl = parseFloat(document.getElementById('milk').value);
+            const pumps = parseFloat(document.getElementById('pumps').value);
 
             // Calculate total
-            const total = calculateLattePrice(espressoShots, milkMl);
+            const total = calculateLattePrice(espressoShots, milkMl, pumps);
 
             // Display result
             document.getElementById('total').textContent = `Total Price: $${total.toFixed(2)}`;
